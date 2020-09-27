@@ -2,7 +2,7 @@
 /*
 Author: IFWP
 Author URI: https://github.com/ifwp
-Description: Improvements and Fixes for WordPress
+Description: Improvements and Fixes for WordPress.
 Domain Path:
 License: GPL2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -10,7 +10,7 @@ Network:
 Plugin Name: IFWP Plugin
 Plugin URI: https://github.com/ifwp/ifwp-plugin
 Text Domain: ifwp-plugin
-Version: 0.9.26.2
+Version: 0.9.26.3
 */
 
 if(!defined('ABSPATH')){
