@@ -22,7 +22,7 @@ if(!class_exists('IFWP_Tabs')){
         static protected function get_settings_page_id($settings_page = ''){
             $settings_page_id = '';
             if(is_string($settings_page)){
-                $settings_page_id = 'ifwp_plugin';
+                $settings_page_id = 'ifwp-plugin';
                 if($settings_page != 'General'){
                     $settings_page_id .= '-' . sanitize_title(wp_strip_all_tags($settings_page));
                 }
@@ -64,7 +64,7 @@ if(!class_exists('IFWP_Tabs')){
             if($settings_page_id){
                 if(!array_key_exists($settings_page_id, self::$settings_pages)){
                     if(is_string($settings_page)){
-                        if($settings_page_id == 'ifwp_plugin'){
+                        if($settings_page_id == 'ifwp-plugin'){
                             self::$settings_pages[$settings_page_id] = [
                                 'capability' => 'manage_options',
 								'columns' => 1,
@@ -88,7 +88,7 @@ if(!class_exists('IFWP_Tabs')){
                                 'menu_title' => $settings_page,
                                 'option_name' => str_replace('-', '_', $settings_page_id),
                                 'page_title' => $settings_page . ' Settings',
-                                'parent' => 'ifwp_plugin',
+                                'parent' => 'ifwp-plugin',
                                 'revision' => true,
                                 'style' => 'no-boxes',
                                 'submit_button' => 'Save ' . $settings_page . ' Settings',
@@ -161,7 +161,7 @@ if(!class_exists('IFWP_Tabs')){
 
         static public function mb_settings_pages($settings_pages){
             if(self::$settings_pages){
-                $general_id = 'ifwp_plugin';
+                $general_id = 'ifwp-plugin';
                 if(array_key_exists($general_id, self::$settings_pages)){
                     $general = self::$settings_pages[$general_id];
                     unset(self::$settings_pages[$general_id]);
@@ -311,12 +311,12 @@ if(!class_exists('IFWP_Tabs')){
             if(is_admin()){
                 $current_screen = get_current_screen();
                 if($current_screen){
-                    if($this->settings_page_id == 'ifwp_plugin'){
-                        if($current_screen->id == 'toplevel_page_ifwp_plugin'){
+                    if($this->settings_page_id == 'ifwp-plugin'){
+                        if($current_screen->id == 'toplevel_page_ifwp-plugin'){
                             return true;
                         }
                     } else {
-                        if($current_screen->id == 'ifwp_plugin_page_' . $this->settings_page_id){
+                        if($current_screen->id == 'ifwp_page_' . $this->settings_page_id){
                             return true;
                         }
                     }
