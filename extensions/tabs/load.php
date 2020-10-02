@@ -19,46 +19,6 @@ if(!class_exists('IFWP_Tabs')){
 
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-        static protected function get_settings_page_id($settings_page = ''){
-            $settings_page_id = '';
-            if(is_string($settings_page)){
-                $settings_page_id = 'ifwp-plugin';
-                if($settings_page != 'General'){
-                    $settings_page_id .= '-' . sanitize_title(wp_strip_all_tags($settings_page));
-                }
-            } elseif(is_array($settings_page)){
-                if(!empty($settings_page['id'])){
-                    $settings_page_id = $settings_page['id'];
-                }
-            }
-            return $settings_page_id;
-        }
-
-        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-        static protected function get_tab_id($tab = ''){
-            return sanitize_title(self::get_tab_title($tab));
-        }
-
-        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-        static protected function get_tab_title($tab = ''){
-            $title = '';
-            if(is_array($tab)){
-                if(!empty($tab['label'])){
-                    $tab = $tab['label'];
-                } else {
-                    $tab = '';
-                }
-            }
-            if(is_string($tab)){
-                $title = wp_strip_all_tags($tab);
-            }
-            return $title;
-        }
-
-        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
         static protected function maybe_add_settings_page($settings_page = ''){
             $settings_page_id = self::get_settings_page_id($settings_page);
             if($settings_page_id){
@@ -155,6 +115,46 @@ if(!class_exists('IFWP_Tabs')){
         static public function load(){
             add_filter('mb_settings_pages', [__CLASS__, 'mb_settings_pages']);
             add_filter('rwmb_meta_boxes', [__CLASS__, 'rwmb_meta_boxes']);
+        }
+
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+        static public function get_settings_page_id($settings_page = ''){
+            $settings_page_id = '';
+            if(is_string($settings_page)){
+                $settings_page_id = 'ifwp-plugin';
+                if($settings_page != 'General'){
+                    $settings_page_id .= '-' . sanitize_title(wp_strip_all_tags($settings_page));
+                }
+            } elseif(is_array($settings_page)){
+                if(!empty($settings_page['id'])){
+                    $settings_page_id = $settings_page['id'];
+                }
+            }
+            return $settings_page_id;
+        }
+
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+        static public function get_tab_id($tab = ''){
+            return sanitize_title(self::get_tab_title($tab));
+        }
+
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+        static public function get_tab_title($tab = ''){
+            $title = '';
+            if(is_array($tab)){
+                if(!empty($tab['label'])){
+                    $tab = $tab['label'];
+                } else {
+                    $tab = '';
+                }
+            }
+            if(is_string($tab)){
+                $title = wp_strip_all_tags($tab);
+            }
+            return $title;
         }
 
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

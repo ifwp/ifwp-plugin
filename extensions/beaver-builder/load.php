@@ -341,6 +341,333 @@ if(!class_exists('IFWP_Beaver_Themer_Plugin')){
 }
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+if(!class_exists('IFWP_BB_Module')){
+    class IFWP_BB_Module {
+
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        //
+        // dynamic protected
+        //
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+        protected $id = '', $prefix = '', $tabs = [];
+
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        //
+        // dynamic public
+        //
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+        public function __construct($class_name = ''){
+    		if(class_exists($class_name)){
+    			$this->id = str_replace('-', '_', sanitize_title($class_name));
+    			$this->prefix = $this->id . '_';
+    		} else {
+    			wp_die('Class "' . esc_html($id) . '" does not exist.');
+    		}
+    	}
+
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+        public function parse(){
+    		if($this->tabs){
+    			foreach($this->tabs as $id => $tab){
+    				$this->tabs[$id] = $tab->parse();
+    			}
+    		}
+    		return $this->tabs;
+    	}
+
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    	public function prefix(){
+    		return $this->prefix;
+    	}
+
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    	public function register(){
+    		FLBuilder::register_module($this->id, $this->parse());
+    	}
+
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    	public function tab($id = '', $title = ''){
+    		if($title){
+    			$this->tabs[$id] = new IFWP_BB_Module_Tab($id, $title, $this->prefix);
+    			return $this->tabs[$id];
+    		} else {
+    			if(isset($this->tabs[$id])){
+    				return $this->tabs[$id];
+    			} else {
+    				wp_die('Tab "' . esc_html($id) . '" does not exist.');
+    			}
+    		}
+    	}
+
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    }
+}
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+if(!class_exists('IFWP_BB_Module_Field')){
+    class IFWP_BB_Module_Field {
+
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        //
+        // dynamic protected
+        //
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    	protected $field = [], $id = '';
+
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        //
+        // dynamic public
+        //
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+        public function __construct($id = '', $field = []){
+    		$this->id = str_replace('-', '_', sanitize_title($id));
+    		$this->field = $field;
+    	}
+
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+        public function parse(){
+    		return $this->field;
+    	}
+
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    }
+}
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+if(!class_exists('IFWP_BB_Module_Section')){
+    class IFWP_BB_Module_Section {
+
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        //
+        // dynamic protected
+        //
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    	protected $fields = [], $id = '', $prefix = '', $title = '';
+
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        //
+        // dynamic public
+        //
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    	public function __construct($id = '', $title = '', $prefix = ''){
+    		$this->id = str_replace('-', '_', sanitize_title($id));
+    		$this->title = $title;
+    		$this->prefix = $prefix . $this->id . '_';
+    	}
+
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    	public function field($id = '', $field = []){
+    		if($field){
+    			$this->fields[$id] = new IFWP_BB_Module_Field($id, $field, $this->prefix);
+    			return $this->fields[$id];
+    		} else {
+    			if(isset($this->fields[$id])){
+    				return $this->fields[$id];
+    			} else {
+    				wp_die('Field "' . esc_html($id) . '" does not exist.');
+    			}
+    		}
+    	}
+
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    	public function parse(){
+    		if($this->fields){
+    			foreach($this->fields as $id => $field){
+    				$this->fields[$id] = $field->parse();
+    			}
+    		}
+    		return [
+    			'title' => $this->title,
+    			'fields' => $this->fields,
+    		];
+    	}
+
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    	public function prefix(){
+    		return $this->prefix;
+    	}
+
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    }
+}
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+if(!class_exists('IFWP_BB_Module_Tab')){
+    class IFWP_BB_Module_Tab {
+
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        //
+        // dynamic protected
+        //
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    	protected $id = '', $prefix = '', $sections = [], $title = '';
+
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        //
+        // dynamic public
+        //
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+        public function __construct($id = '', $title = '', $prefix = ''){
+    		$this->id = str_replace('-', '_', sanitize_title($id));
+    		$this->title = $title;
+    		$this->prefix = $prefix . $this->id . '_';
+    	}
+
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+        public function parse(){
+    		if($this->sections){
+    			foreach($this->sections as $id => $section){
+    				$this->sections[$id] = $section->parse();
+    			}
+    		}
+    		return [
+    			'title' => $this->title,
+    			'sections' => $this->sections,
+    		];
+    	}
+
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    	public function prefix(){
+    		return $this->prefix;
+    	}
+
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    	public function section($id = '', $title = null){
+    		if(is_null($title)){
+    			if(isset($this->sections[$id])){
+    				return $this->sections[$id];
+    			} else {
+    				wp_die('Section "' . esc_html($id) . '" does not exist.');
+    			}
+    		} else {
+    			$this->sections[$id] = new IFWP_BB_Module_Section($id, $title, $this->prefix);
+    			return $this->sections[$id];
+    		}
+    	}
+
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    }
+}
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+if(!class_exists('IFWP_BB_Settings_Form')){
+    class IFWP_BB_Settings_Form {
+
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        //
+        // dynamic protected
+        //
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    	protected $id = '', $prefix = '', $tabs = [];
+
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        //
+        // dynamic public
+        //
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+        public function __construct($id = '', $title = ''){
+    		$this->id = str_replace('-', '_', sanitize_title($id));
+    		$this->title = $title;
+    		$this->prefix = $this->id . '_';
+    	}
+
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+        public function parse(){
+    		if($this->tabs){
+    			foreach($this->tabs as $id => $tab){
+    				$this->tabs[$id] = $tab->parse();
+    			}
+    		}
+    		return [
+    			'title' => $this->title,
+    			'tabs' => $this->tabs,
+    		];
+    	}
+
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    	public function prefix(){
+    		return $this->prefix;
+    	}
+
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    	public function register(){
+    		FLBuilder::register_settings_form($this->id, $this->parse());
+    	}
+
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    	public function tab($id = '', $title = ''){
+    		if($title){
+    			$this->tabs[$id] = new IFWP_BB_Module_Tab($id, $title, $this->prefix);
+    			return $this->tabs[$id];
+    		} else {
+    			if(isset($this->tabs[$id])){
+    				return $this->tabs[$id];
+    			} else {
+    				wp_die('Tab "' . esc_html($id) . '" does not exist.');
+    			}
+    		}
+    	}
+
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    }
+}
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//
+// functions
+//
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+if(!function_exists('ifwp_bb_module')){
+    function ifwp_bb_module($class_name = ''){
+        return new IFWP_BB_Module($class_name);
+    }
+}
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+if(!function_exists('ifwp_bb_settings_form')){
+    function ifwp_bb_settings_form($id = '', $title = ''){
+        return new IFWP_BB_Settings_Form($id, $title);
+    }
+}
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //
 // loader
 //
