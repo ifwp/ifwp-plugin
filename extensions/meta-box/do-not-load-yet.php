@@ -74,7 +74,7 @@ if(!class_exists('IFWP_Meta_Box')){
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
         static public function ifwp_plugin_loaded(){
-			$meta_box = ifwp_tab('', 'Meta Box');
+			$meta_box = ifwp_tab('Meta Box');
 			$meta_box->add_field('add_custom_field_types', [
                 'label_description' => 'Custom field types: col_close, col_open, raw_html, row_close, row_open.',
 				'name' => 'Add custom field types?',
@@ -120,7 +120,7 @@ if(!class_exists('IFWP_Meta_Box')){
 				'type' => 'switch',
 			]);
             if($meta_box->support_floating_labels){
-                
+
             }
             $meta_box->add_field('use_select2_full', [
 				'name' => 'Use select2.full instead of select2?',
