@@ -366,14 +366,6 @@ if(!function_exists('ifwp_response_success')){
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-if(!function_exists('ifwp_seems_cloudflare')){
-    function ifwp_seems_cloudflare(){
-        return !empty($_SERVER['HTTP_CF_RAY']);
-    }
-}
-
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 if(!function_exists('ifwp_seems_response')){
     function ifwp_seems_response($response = []){
         return ifwp_array_keys_exist(['code', 'data', 'message', 'success'], $response);
