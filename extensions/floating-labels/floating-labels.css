@@ -1,3 +1,7 @@
+
+/* IFWP Floating Labels
+-------------------------------------------------- */
+
 .ifwp-floating-labels {
   position: relative;
   margin-bottom: 1rem;
@@ -21,116 +25,116 @@
 }
 
 .ifwp-floating-labels label {
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: block;
-  width: 100%;
-  margin-bottom: 0; /* Override default `<label>` margin */
-  line-height: 1.5;
-  color: #495057;
-  pointer-events: none;
-  cursor: text; /* Match the input under the label */
-  border: 1px solid transparent;
-  border-radius: .25rem;
-  transition: all .1s ease-in-out;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    width: 100%;
+    margin-bottom: 0; /* Override default `<label>` margin */
+    line-height: 1.5;
+    color: var(--gray-dark);
+    pointer-events: none;
+    cursor: text; /* Match the input under the label */
+    border: 1px solid transparent;
+    border-radius: .25rem;
+    transition: all .1s ease-in-out;
 }
 
 .ifwp-floating-labels input::-webkit-input-placeholder,
 .ifwp-floating-labels textarea::-webkit-input-placeholder {
-  color: transparent;
+    color: transparent;
 }
 
 .ifwp-floating-labels input::-moz-placeholder,
 .ifwp-floating-labels textarea::-moz-placeholder {
-  color: transparent;
+    color: transparent;
 }
 
 .ifwp-floating-labels input:-ms-input-placeholder,
 .ifwp-floating-labels textarea:-ms-input-placeholder {
-  color: transparent;
+    color: transparent;
 }
 
 .ifwp-floating-labels input::-ms-input-placeholder,
 .ifwp-floating-labels textarea::-ms-input-placeholder {
-  color: transparent;
+    color: transparent;
 }
 
 .ifwp-floating-labels input::placeholder,
 .ifwp-floating-labels textarea::placeholder {
-  color: transparent;
+    color: transparent;
 }
 
 .ifwp-floating-labels input:not(:-moz-placeholder-shown),
 .ifwp-floating-labels textarea:not(:-moz-placeholder-shown) {
-  padding-top: 1.25rem;
-  padding-bottom: .25rem;
+    padding-top: 1.25rem;
+    padding-bottom: .25rem;
 }
 
 .ifwp-floating-labels input:not(:-ms-input-placeholder),
 .ifwp-floating-labels textarea:not(:-ms-input-placeholder) {
-  padding-top: 1.25rem;
-  padding-bottom: .25rem;
+    padding-top: 1.25rem;
+    padding-bottom: .25rem;
 }
 
 .ifwp-floating-labels input:not(:placeholder-shown),
 .ifwp-floating-labels textarea:not(:placeholder-shown) {
-  padding-top: 1.25rem;
-  padding-bottom: .25rem;
+    padding-top: 1.25rem;
+    padding-bottom: .25rem;
 }
 
 .ifwp-floating-labels select.placeholder-hidden {
-  padding-top: 1.25rem;
-  padding-bottom: .25rem;
+    padding-top: 1.25rem;
+    padding-bottom: .25rem;
 }
 
 .ifwp-floating-labels input:not(:-moz-placeholder-shown) ~ label,
 .ifwp-floating-labels textarea:not(:-moz-placeholder-shown) ~ label {
-  padding-top: .25rem;
-  padding-bottom: .25rem;
-  font-size: 12px;
-  color: #777;
+    padding-top: .25rem;
+    padding-bottom: .25rem;
+    font-size: 12px;
+    color: var(--gray);
 }
 
 .ifwp-floating-labels input:not(:-ms-input-placeholder) ~ label,
 .ifwp-floating-labels textarea:not(:-ms-input-placeholder) ~ label {
-  padding-top: .25rem;
-  padding-bottom: .25rem;
-  font-size: 12px;
-  color: #777;
+    padding-top: .25rem;
+    padding-bottom: .25rem;
+    font-size: 12px;
+    color: var(--gray);
 }
 
 .ifwp-floating-labels input:not(:placeholder-shown) ~ label,
 .ifwp-floating-labels textarea:not(:placeholder-shown) ~ label {
-  padding-top: .25rem;
-  padding-bottom: .25rem;
-  font-size: 12px;
-  color: #777;
+    padding-top: .25rem;
+    padding-bottom: .25rem;
+    font-size: 12px;
+    color: var(--gray);
 }
 
 .ifwp-floating-labels select.placeholder-hidden ~ label {
     padding-top: .25rem;
     padding-bottom: .25rem;
     font-size: 12px;
-    color: #777;
+    color: var(--gray);
 }
 
 /* Fallback for Edge
 -------------------------------------------------- */
 @supports (-ms-ime-align: auto) {
-  .ifwp-floating-labels {
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-direction: column-reverse;
-    flex-direction: column-reverse;
-  }
+    .ifwp-floating-labels {
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-direction: column-reverse;
+        flex-direction: column-reverse;
+    }
 
-  .ifwp-floating-labels label {
-    position: static;
-  }
+    .ifwp-floating-labels label {
+        position: static;
+    }
 
-  .ifwp-floating-labels input::-ms-input-placeholder,
-  .ifwp-floating-labels textarea::-ms-input-placeholder {
-    color: #777;
-  }
+    .ifwp-floating-labels input::-ms-input-placeholder,
+    .ifwp-floating-labels textarea::-ms-input-placeholder {
+        color: var(--gray);
+    }
 }

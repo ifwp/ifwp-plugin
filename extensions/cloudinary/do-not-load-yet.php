@@ -21,14 +21,7 @@ if(!class_exists('IFWP_Cloudinary')){
 
         static protected function image_get_intermediate_size($id = 0, $size = ''){
             $image_size = self::$image_sizes[$size];
-            $image = get_post_meta($id, '_ifwp_cloudinary_image_' . $image_size['options_md5'], true);
-            if(!$image){
-                $image = \Cloudinary\Uploader::upload(get_attached_file($id), $image_size['options']);
-                if($image instanceof \Cloudinary\Error){
-                    return false;
-                }
-        		update_post_meta($id, '_ifwp_cloudinary_image_' . $image_size['options_md5'], $image);
-            }
+            $image = ifwp_cloudinary_upload($id, $image_size['options']);
             $url = (isset($image['secure_url']) ? $image['secure_url'] : (isset($image['url']) ? $image['url'] : ''));
             $width = (isset($image['width']) ? $image['width'] : 0);
             $height = (isset($image['height']) ? $image['height'] : 0);
@@ -50,9 +43,7 @@ if(!class_exists('IFWP_Cloudinary')){
                 'name' => $name,
                 'options' => [],
             ], $args);
-            ksort($args['options']);
-            //$args['options_md5'] = md5(ifwp_base64_urldecode(wp_json_encode($args['options'])));
-            $args['options_md5'] = md5(maybe_serialize($args['options']));
+            $args['options_md5'] = ifwp_md5($args['options']);
             self::$image_sizes[$name] = $args;
         }
 
@@ -293,6 +284,26 @@ if(!function_exists('ifwp_cloudinary')){
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+if(!function_exists('ifwp_cloudinary_upload')){
+    function ifwp_cloudinary_upload($attachment_id = 0, $options = []){
+        if(ifwp_maybe_load_cloudinary_api()){
+            $md5 = ifwp_md5($options);
+            $image = get_post_meta($attachment_id, '_ifwp_cloudinary_image_' . $md5, true);
+            if(!$image){
+                $image = \Cloudinary\Uploader::upload(get_attached_file($attachment_id), $options);
+                if($image instanceof \Cloudinary\Error){
+                    return [];
+                }
+                update_post_meta($attachment_id, '_ifwp_cloudinary_image_' . $md5, $image);
+            }
+            return $image;
+        }
+        return [];
+    }
+}
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 if(!function_exists('ifwp_maybe_load_cloudinary_api')){
     function ifwp_maybe_load_cloudinary_api(){
 		if(!class_exists('\Cloudinary')){
@@ -301,8 +312,12 @@ if(!function_exists('ifwp_maybe_load_cloudinary_api')){
             if(is_dir($dir)){
                 require_once($dir . '/vendor/autoload.php');
                 ifwp_set_cloudinary_credentials();
+                return true;
             }
-		}
+		} else {
+            return true;
+        }
+        return false;
     }
 }
 
@@ -320,13 +335,14 @@ if(!function_exists('ifwp_set_cloudinary_credentials')){
 			$api_secret = ifwp_tab_option('Cloudinary', 'API', 'api_secret', '');
 		}
         if(!$cloud_name or !$api_key or !$api_secret){
-            return;
+            return false;
         }
         \Cloudinary::config([
             'cloud_name' => $cloud_name,
             'api_key' => $api_key,
             'api_secret' => $api_secret,
         ]);
+        return true;
 	}
 }
 

@@ -23,7 +23,7 @@ if(!class_exists('IFWP_Sessions')){
             	'type' => 'switch',
             ]);
             if($general->support_native_php_sessions){
-                add_action('init', [__CLASS__, 'init']);
+                add_action('init', [__CLASS__, 'init'], 9);
                 add_action('wp_login', [__CLASS__, 'wp_login'], 10, 2);
                 add_action('wp_logout', [__CLASS__, 'wp_logout']);
             }
@@ -37,6 +37,14 @@ if(!class_exists('IFWP_Sessions')){
         	}
         	if(empty($_SESSION['ifwp_current_user_id'])){
         		$_SESSION['ifwp_current_user_id'] = get_current_user_id();
+        	}
+            if(empty($_SESSION['ifwp_utm'])){
+        		$_SESSION['ifwp_utm'] = [];
+                foreach($_GET as $key => $value){
+                    if(substr($key, 0, 4) == 'utm_'){
+                        $_SESSION['ifwp_utm'][$key] = $value;
+                    }
+                }
         	}
         }
 
@@ -62,6 +70,25 @@ if(!class_exists('IFWP_Sessions')){
 
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+    }
+}
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//
+// functions
+//
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+if(!function_exists('ifwp_get_utm')){
+    function ifwp_get_utm(){
+        $utm = empty($_SESSION['ifwp_utm']) ? [] : $_SESSION['ifwp_utm'];
+        return shortcode_atts([
+            'utm_source' => '',
+            'utm_medium' => '',
+            'utm_campaign' => '',
+            'utm_term' => '',
+            'utm_content' => '',
+        ], $utm);
     }
 }
 

@@ -200,6 +200,17 @@ if(!function_exists('ifwp_get_memory_size')){
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+if(!function_exists('ifwp_is_array_assoc')){
+    function ifwp_is_array_assoc($array = []){
+        if(is_array($array)){
+            return (array_keys($array) !== range(0, count($array) - 1));
+        }
+		return false;
+	}
+}
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 if(!function_exists('ifwp_is_plugin_active')){
     function ifwp_is_plugin_active($plugin = ''){
 		if(!function_exists('is_plugin_active')){
@@ -207,6 +218,45 @@ if(!function_exists('ifwp_is_plugin_active')){
 		}
 		return is_plugin_active($plugin);
 	}
+}
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+if(!function_exists('ifwp_maybe_load_simple_html_dom')){
+    function ifwp_maybe_load_simple_html_dom(){
+		if(!function_exists('file_get_html')){
+            require_once(plugin_dir_path(__FILE__) . 'simple_html_dom.php');
+		}
+        return true;
+    }
+}
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+if(!function_exists('ifwp_md5')){
+    function ifwp_md5($data = ''){
+        if(is_object($data)){
+            $data = json_decode(wp_json_encode($data), true);
+        }
+        if(is_array($data)){
+            if(ifwp_is_array_assoc($data)){
+                ksort($data);
+            }
+            $data = maybe_serialize($data);
+        }
+		return md5($data);
+	}
+}
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+if(!function_exists('ifwp_md5_to_uuid4')){
+    function ifwp_md5_to_uuid4($md5 = ''){
+    	if(strlen($md5) == 32){
+    		return substr($md5, 0, 8) . '-' . substr($md5, 8, 4) . '-' . substr($md5, 12, 4) . '-' . substr($md5, 16, 4) . '-' . substr($md5, 20, 12);
+    	}
+        return '';
+    }
 }
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -242,6 +292,47 @@ if(!function_exists('ifwp_on')){
     function ifwp_on($tag = '', $function_to_add = '', $priority = 10, $accepted_args = 1){
         add_filter($tag, $function_to_add, $priority, $accepted_args);
 		return _wp_filter_build_unique_id($tag, $function_to_add, $priority);
+    }
+}
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+if(!function_exists('ifwp_post_type_labels')){
+    function ifwp_post_type_labels($singular = '', $plural = ''){
+    	if($singular and $plural){
+    		return [
+    			'name' => $plural,
+    			'singular_name' => $singular,
+    			'add_new' => 'Add New',
+    			'add_new_item' => 'Add New ' . $singular,
+    			'edit_item' => 'Edit ' . $singular,
+    			'new_item' => 'New ' . $singular,
+    			'view_item' => 'View ' . $singular,
+    			'view_items' => 'View ' . $plural,
+    			'search_items' => 'Search ' . $plural,
+    			'not_found' => 'No ' . strtolower($plural) . ' found.',
+    			'not_found_in_trash' => 'No ' . strtolower($plural) . ' found in Trash.',
+    			'parent_item_colon' => 'Parent ' . $singular . ':',
+    			'all_items' => 'All ' . $plural,
+    			'archives' => $singular . ' Archives',
+    			'attributes' => $singular . ' Attributes',
+    			'insert_into_item' => 'Insert into ' . strtolower($singular),
+    			'uploaded_to_this_item' => 'Uploaded to this ' . strtolower($singular),
+    			'featured_image' => 'Featured image',
+    			'set_featured_image' => 'Set featured image',
+    			'remove_featured_image' => 'Remove featured image',
+    			'use_featured_image' => 'Use as featured image',
+    			'filter_items_list' => 'Filter ' . strtolower($plural) . ' list',
+    			'items_list_navigation' => $plural . ' list navigation',
+    			'items_list' => $plural . ' list',
+    			'item_published' => $singular . ' published.',
+    			'item_published_privately' => $singular . ' published privately.',
+    			'item_reverted_to_draft' => $singular . ' reverted to draft.',
+    			'item_scheduled' => $singular . ' scheduled.',
+    			'item_updated' => $singular . ' updated.',
+    		];
+    	}
+    	return [];
     }
 }
 

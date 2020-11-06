@@ -115,13 +115,6 @@ if(!class_exists('IFWP_Meta_Box')){
             if($meta_box->use_date_i18n){
                 add_filter('rwmb_the_value', [__CLASS__, 'the_value'], 20, 4);
             }
-            $meta_box->add_field('support_floating_labels', [
-				'name' => 'Support floating labels?',
-				'type' => 'switch',
-			]);
-            if($meta_box->support_floating_labels){
-
-            }
             $meta_box->add_field('use_select2_full', [
 				'name' => 'Use select2.full instead of select2?',
 				'type' => 'switch',
