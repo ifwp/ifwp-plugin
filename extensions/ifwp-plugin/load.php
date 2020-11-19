@@ -356,7 +356,7 @@ if(!function_exists('ifwp_prepare')){
 
 if(!function_exists('ifwp_seems_json')){
     function ifwp_seems_json($str = ''){
-        return (is_string($str) and preg_match('/^\{\".*\"\:.*\}$/', $str));
+        return (is_string($str) and (preg_match('/^\{\".*\"\:.*\}$/', $str) or preg_match('/^\[.*\]$/', $str)));
     }
 }
 
